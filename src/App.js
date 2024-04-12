@@ -71,16 +71,19 @@ class App extends Component {
     });
   }    
 
-  calculateFaceLocation = (clarifaiFace) => {
+  calculateFaceLocation = (data) => {
       const image = document.getElementById('inputimage');
       const width = Number(image.width);
       const height = Number(image.height);
-      return {
-        bottomRow: height - (clarifaiFace.bottom_row * height),
-        leftCol: clarifaiFace.left_col * width,
-        rightCol: width - (clarifaiFace.right_col * width),
-        topRow: clarifaiFace.top_row * height,
-      }
+      return data.map(face => {
+        const clarifaiFace = face.region_info.bounding_box;
+        return {
+          bottomRow: height - (clarifaiFace.bottom_row * height),
+          leftCol: clarifaiFace.left_col * width,
+          rightCol: width - (clarifaiFace.right_col * width),
+          topRow: clarifaiFace.top_row * height
+        }
+      });
   }
 
   displayFaceBox = (box) => {
